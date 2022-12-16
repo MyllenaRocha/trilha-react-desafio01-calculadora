@@ -2,24 +2,30 @@
 import Input from './components/Input';
 import Button from './components/Button';
 
-import { Container, Content, Row } from './styles';
+import { Container, Content, Row, Titulo } from './styles';
 import { useState } from 'react';
 
 
 const App = () => {
   const [currentNumber, setCurrentNumber] = useState('0');
   const [firstNumber, setFirstNumber] = useState('0');
+
   const [operation, setOperation] = useState('');
 
   const handleOnClear = () => {
     setCurrentNumber('0')
     setFirstNumber('0')
+
     setOperation('')
   };
 
   const handleAddNumber = (num) => {
     setCurrentNumber(prev => `${prev === '0' ? '' : prev}${num}`)
+ 
   }
+
+
+ 
 
   const handleSumNumbers = () => {
 
@@ -49,6 +55,33 @@ const App = () => {
 
   }
 
+  const handleMutiplicaNumbers = () => {
+
+    if(firstNumber === '0'){
+        setFirstNumber(String(currentNumber));
+        setCurrentNumber('0')
+        setOperation('*')
+    }else {
+      const sum = Number(firstNumber) * Number(currentNumber);
+      setCurrentNumber(String(sum))
+      setOperation('')
+    }
+
+  }
+  const handleDividirNumbers = () => {
+
+    if(firstNumber === '0'){
+        setFirstNumber(String(currentNumber));
+        setCurrentNumber('0')
+        setOperation('/')
+    }else {
+      const sum = Number(firstNumber) / Number(currentNumber);
+      setCurrentNumber(String(sum))
+      setOperation('')
+    }
+
+  }
+
   const handleEquals = () => {
 
     if(firstNumber !== '0' && operation !== '' && currentNumber !== '0'){
@@ -59,6 +92,12 @@ const App = () => {
           case '-':
             handleMinusNumbers();
             break;
+          case '*':
+            handleMutiplicaNumbers();
+            break;
+          case '/':
+            handleDividirNumbers();
+            break;
           default: 
             break;
         }
@@ -67,12 +106,14 @@ const App = () => {
   }
 
   return (
-    <Container>
+    <>
+    <Container> 
+      <Titulo>Calculadora</Titulo>
       <Content>
         <Input value={currentNumber}/>
         <Row>
-          <Button label="x"/>
-          <Button label="/"/>
+          <Button label="x" onClick={handleMutiplicaNumbers}/>
+          <Button label="/" onClick={handleDividirNumbers}/>
           <Button label="c" onClick={handleOnClear}/>
           <Button label="."/>
         </Row>
@@ -96,6 +137,7 @@ const App = () => {
         </Row>
       </Content>
     </Container>
+    </>
   );
 }
 
